@@ -13,8 +13,9 @@ public class TennisManager {
 	static int score1 = 0, score2 = 0; /*Score que van teniendo los jugadores 1 y 2
 	 									respectivamente*/
 	
-	//Función para agregar un partido nuevo
-	public static void addMatch(){
+	/*Función para agregar un partido nuevo. 
+	 * Retorna el jugador ganador del partido. */
+	public static Player addMatch(){
 		add = new Scanner(System.in);
 		
 		//Comprueba si ya existe un partido creado. Si es así, lo elimina o no
@@ -137,9 +138,31 @@ public class TennisManager {
 					while(flag){
 						select = add.nextInt();
 						
+						System.out.println("\nSeleccione la jugada hecha:\n");
+						System.out.println("1. Serve");
+						System.out.println("2. Forehand");
+						System.out.println("3. Backhand");
+						System.out.println("4. Volley");
+						System.out.println("5. Half-Volley");
+						System.out.println("6. Lob");
+						System.out.println("7. Overhead-Smash");
+						System.out.println("8. Drop-Shot");
+						System.out.println("9. Counter Drop-Shot");
+						
+						aux = new Scanner(System.in);
+						int play;
+						
 						switch(select){
 						case 1:
-							jugada = plays(player1);
+							play = aux.nextInt();
+							
+							while(play < 1 || play > 9){
+								System.out.println("\nOpción inválida. "
+										+ "Por favor seleccione otra\n");
+								play = aux.nextInt();
+							}
+							
+							jugada = plays(player1, play);
 							score1++;
 							player1.setScore(score1);
 							
@@ -160,7 +183,14 @@ public class TennisManager {
 							break;
 							
 						case 2:
-							jugada = plays(player2);
+							play = aux.nextInt();
+							
+							while(play < 1 || play > 9){
+								System.out.println("\nOpción inválida. "
+										+ "Por favor seleccione otra\n");
+								play = aux.nextInt();
+							}
+							jugada = plays(player2, play);
 							score2++;
 							player2.setScore(score2);
 							
@@ -306,7 +336,7 @@ public class TennisManager {
 					ex.printStackTrace();
 				}
 				
-				winner = tiebreaker(player1, player2);
+				tiebreaker(player1, player2).SetsList.add(set);
 				break;
 			}
 		}
@@ -314,6 +344,7 @@ public class TennisManager {
 		//Determina cual jugador gano el partido
 		if(player1.SetsList.size() == 2){
 			player1.MatchesList.add(match);
+			winner = player1;
 			System.out.println("\nEl ganador del partido es " + player1.name);
 			try{
 				FileWriter fw = new FileWriter(filePlayers, true);
@@ -328,6 +359,7 @@ public class TennisManager {
 		}
 		else if(player2.SetsList.size() == 2){
 			player2.MatchesList.add(match);
+			winner = player2;
 			System.out.println("\nEl ganador del partido es " + player2.name);
 			try{
 				FileWriter fw = new FileWriter(filePlayers, true);
@@ -340,44 +372,15 @@ public class TennisManager {
 				ex.printStackTrace();
 			}
 		}
-		else if(winner != null){
-			winner.MatchesList.add(match);
-			System.out.println("\nEl ganador del partido es " + winner.name);
-			try{
-				FileWriter fw = new FileWriter(filePlayers, true);
-				fw.append('\n');
-				fw.append("Ganador partido: " + winner.name);
-				fw.append('\n');
-				fw.close();
-			}
-			catch(IOException ex){
-				ex.printStackTrace();
-			}
-		}
 		
 		main(null);
+		return winner;
 	}
 	
 	/*Metodo auxiliar de la funcion addMatch()
 	 * Maneja la seleccion de jugadas hechas por el jugador que anoto */
-	private static String plays(Player player){
-		int select;
-		aux = new Scanner(System.in);
-		
-		System.out.println("\nSeleccione la jugada hecha:\n");
-		System.out.println("1. Serve");
-		System.out.println("2. Forehand");
-		System.out.println("3. Backhand");
-		System.out.println("4. Volley");
-		System.out.println("5. Half-Volley");
-		System.out.println("6. Lob");
-		System.out.println("7. Overhead-Smash");
-		System.out.println("8. Drop-Shot");
-		System.out.println("9. Counter Drop-Shot");
-		
-		while(true){
-			select = aux.nextInt();
-			
+	static String plays(Player player, int select){
+
 			switch(select){
 				case 1:
 					return "Serve";
@@ -407,9 +410,7 @@ public class TennisManager {
 					return "Counter Drop-Shot";
 				
 				default:
-					System.out.println("\nOpción inválida. Por favor seleccione otra\n");
-					break;
-			}
+					return "";
 		}
 	}
 	
@@ -427,9 +428,31 @@ public class TennisManager {
 			while(flag){
 				select = add.nextInt();
 				
+				System.out.println("\nSeleccione la jugada hecha:\n");
+				System.out.println("1. Serve");
+				System.out.println("2. Forehand");
+				System.out.println("3. Backhand");
+				System.out.println("4. Volley");
+				System.out.println("5. Half-Volley");
+				System.out.println("6. Lob");
+				System.out.println("7. Overhead-Smash");
+				System.out.println("8. Drop-Shot");
+				System.out.println("9. Counter Drop-Shot");
+				
+				aux = new Scanner(System.in);
+				int play;
+				
 				switch(select){
 				case 1:
-					jugada = plays(player1);
+					play = aux.nextInt();
+					
+					while(play < 1 || play > 9){
+						System.out.println("\nOpción inválida."
+								+ " Por favor seleccione otra\n");
+						play = aux.nextInt();
+					}
+					
+					jugada = plays(player1, play);
 					score1++;
 					player1.setScore(score1);
 					
@@ -450,7 +473,15 @@ public class TennisManager {
 					break;
 					
 				case 2:
-					jugada = plays(player2);
+					play = aux.nextInt();
+					
+					while(play < 1 || play > 9){
+						System.out.println("\nOpción inválida. "
+								+ "Por favor seleccione otra\n");
+						play = aux.nextInt();
+					}
+					
+					jugada = plays(player2, play);
 					score2++;
 					player2.setScore(score2);
 					
