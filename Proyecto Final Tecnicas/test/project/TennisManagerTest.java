@@ -12,23 +12,23 @@ public class TennisManagerTest {
 	@Test
 	public void addMatchTest() {
 		File file = TennisManager.filePlayers;
-		TennisManager gameTest = new TennisManager();
+		TennisManager matchTest = new TennisManager();
 		Player player1 = new Player(), player2 = new Player();
-		gameTest.player1 = player1;
-		gameTest.player2 = player2;
-		gameTest.player1.setScore(7);
-		gameTest.player2.setScore(5);
-		gameTest.player1.SetsList.add(new Sets());
-		gameTest.player1.SetsList.add(new Sets());
+		matchTest.player1 = player1;
+		matchTest.player2 = player2;
+		matchTest.player1.setScore(7);
+		matchTest.player2.setScore(5);
+		matchTest.player1.SetsList.add(new Sets());
+		matchTest.player1.SetsList.add(new Sets());
 		
 		if(file.exists())
 			assertTrue(TennisManager.checkFile());
 		else{
 			assertFalse(TennisManager.checkFile());
-			assertEquals(gameTest.plays(gameTest.player1, 1), "Serve");
-			assertEquals(gameTest.tiebreaker(gameTest.player1, gameTest.player2), 
-					gameTest.player1);
-			assertEquals(gameTest.addMatch(), player1);
+			assertEquals(matchTest.plays(matchTest.player1, 1), "Serve");
+			assertEquals(matchTest.tiebreaker(matchTest.player1, matchTest.player2), 
+					matchTest.player1);
+			assertEquals(matchTest.winner(), matchTest.player1);
 		}
 	}
 	

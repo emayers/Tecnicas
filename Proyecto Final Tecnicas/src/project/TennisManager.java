@@ -15,7 +15,7 @@ public class TennisManager {
 	
 	/*Función para agregar un partido nuevo. 
 	 * Retorna el jugador ganador del partido. */
-	public static Player addMatch(){
+	public static void addMatch(){
 		add = new Scanner(System.in);
 		
 		//Comprueba si ya existe un partido creado. Si es así, lo elimina o no
@@ -342,39 +342,23 @@ public class TennisManager {
 		}
 		
 		//Determina cual jugador gano el partido
-		if(player1.SetsList.size() == 2){
-			player1.MatchesList.add(match);
-			winner = player1;
-			System.out.println("\nEl ganador del partido es " + player1.name);
-			try{
-				FileWriter fw = new FileWriter(filePlayers, true);
-				fw.append('\n');
-				fw.append("Ganador partido: " + player1.name);
-				fw.append('\n');
-				fw.close();
-			}
-			catch(IOException ex){
-				ex.printStackTrace();
-			}
+		winner = winner();
+		winner.MatchesList.add(match);
+		
+		System.out.println("\nEl ganador del partido es " + winner.name);
+		
+		try{
+			FileWriter fw = new FileWriter(filePlayers, true);
+			fw.append('\n');
+			fw.append("Ganador partido: " + winner.name);
+			fw.append('\n');
+			fw.close();
 		}
-		else if(player2.SetsList.size() == 2){
-			player2.MatchesList.add(match);
-			winner = player2;
-			System.out.println("\nEl ganador del partido es " + player2.name);
-			try{
-				FileWriter fw = new FileWriter(filePlayers, true);
-				fw.append('\n');
-				fw.append("Ganador partido: " + player2.name);
-				fw.append('\n');
-				fw.close();
-			}
-			catch(IOException ex){
-				ex.printStackTrace();
-			}
+		catch(IOException ex){
+			ex.printStackTrace();
 		}
 		
 		main(null);
-		return winner;
 	}
 	
 	/*Metodo auxiliar de la funcion addMatch()
@@ -517,6 +501,18 @@ public class TennisManager {
 		}
 		else
 			return player2;
+	}
+	
+	/*Metodo auxiliar de la funcion addMatch()
+	 * Determina cual jugador es el ganador del partido. */
+	static Player winner(){
+		
+		if(player1.SetsList.size() == 2)
+			return player1;
+		else if(player2.SetsList.size() == 2)
+			return player2;
+		else
+			return null;
 	}
 	
 	//Funcion para imprimir el partido anteriormente guardado
